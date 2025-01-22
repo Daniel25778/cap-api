@@ -1,0 +1,70 @@
+{
+  "matchId": "6a396d52-6878-416f-b485-4b43752e0de0",
+  "teams": [
+    {
+      "position": 1,
+      "players": [
+        {
+          "name": "Italo",
+          "kill": 42
+        },
+        {
+          "name": "Clebin",
+          "kill": 92
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "players": [
+        {
+          "name": "Jao",
+          "kill": 33
+        },
+        {
+          "name": "Erick",
+          "kill": 80
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "players": [
+        {
+          "name": "Carlos",
+          "kill": 23
+        },
+        {
+          "name": "Antonio",
+          "kill": 40
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "players": [
+        {
+          "name": "Lucas",
+          "kill": 28
+        },
+        {
+          "name": "string",
+          "kill": 12
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "players": [
+        {
+          "name": "Alger",
+          "kill": 1
+        },
+        {
+          "name": "Daniel",
+          "kill": 99
+        }
+      ]
+    }
+  ]
+}
