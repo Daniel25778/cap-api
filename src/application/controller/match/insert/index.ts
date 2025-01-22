@@ -24,7 +24,7 @@ interface Body {
  * @typedef {object} InsertMatchResponse
  * @property {Messages} message
  * @property {string} status
- * @property {Match} payload
+ * @property {SimpleMatch} payload
  */
 
 /**

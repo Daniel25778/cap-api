@@ -36,11 +36,13 @@ import type { playerQueryFields } from '@data/validation';
  * @param {string} instagram.query
  * @param {boolean} isMemberBoolean.query
  * @param {boolean} isOnGuildBoolean.query
+ * @param {boolean} totalKillsMoreThan.query
+ * @param {boolean} totalKillsLessThan.query
  * @param {integer} page.query
  * @param {integer} limit.query
  * @param {string} startDate.query (Ex: 2024-01-01).
  * @param {string} endDate.query (Ex: 2024-01-01).
- * @param {string} orderBy.query - enum:name,nickname,isMember,isOnGuild,createdAt,updatedAt
+ * @param {string} sortBy.query - enum:name,nickname,isMember,instagram,totalKills,isOnGuild,createdAt,updatedAt
  * @param {string} sort.query - enum:asc,desc
  * @return {FindPlayerResponse} 200 - Successful response - application/json
  * @return {BadRequest} 400 - Bad request response - application/json

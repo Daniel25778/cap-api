@@ -1,6 +1,7 @@
 import { DataSource } from '@infra/database';
 import { ValidationError } from 'yup';
 import { errorLogger, messageErrorResponse, ok, validationErrorResponse } from '@main/utils';
+import { insertMatchTeamSchema } from '@data/validation';
 import type { Controller } from '@application/protocols';
 import type { Request, Response } from 'express';
 
@@ -55,9 +56,11 @@ interface Body {
  */
 export const insertMatchTeamController: Controller =
   () => async (request: Request, response: Response) => {
-    const { matchId, teams } = request.body as Body;
-
     try {
+      await insertMatchTeamSchema.validate(request, { abortEarly: false });
+
+      const { matchId, teams } = request.body as Body;
+
       await DataSource.$transaction(async (tx) => {
         await Promise.all(
           teams.map(async (team) => {

@@ -3,12 +3,16 @@ export type playerQueryFields =
   | 'isMemberBoolean'
   | 'isOnGuildBoolean'
   | 'name'
-  | 'nickname';
+  | 'nickname'
+  | 'totalKillsLessThan'
+  | 'totalKillsMoreThan';
 
 export const playerListQueryFields: playerQueryFields[] = [
   'name',
   'nickname',
   'isMemberBoolean',
+  'totalKillsMoreThan',
+  'totalKillsLessThan',
   'isOnGuildBoolean',
   'instagram'
 ];

@@ -115,6 +115,7 @@ export const arrayRequired = (data: AnySchema, field: messageTypeResponse): AnyS
   yup
     .array()
     .of(data)
+    .min(1, JSON.stringify(messages.yup.requiredSchema(field)))
     .required(JSON.stringify(messages.yup.requiredSchema(field)));
 
 export const arrayNotRequired = (data: AnySchema): AnySchema => yup.array().of(data);

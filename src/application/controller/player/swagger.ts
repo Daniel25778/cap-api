@@ -7,7 +7,6 @@
  * @property {boolean} isOnGuild
  * @property {boolean} isMember
  * @property {integer} totalKills
- * @property {string} finishedAt
  * @property {string} createdAt
  * @property {string} updatedAt
  */

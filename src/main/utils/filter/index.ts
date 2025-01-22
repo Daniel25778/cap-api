@@ -3,7 +3,7 @@ interface GetPageAndLimitInput<QueryType extends string> {
   query: {
     [key in QueryType]?: string;
   } & {
-    orderBy?: QueryType;
+    sortBy?: QueryType;
     sort?: 'asc' | 'desc';
     startDate?: string;
     endDate?: string;
@@ -29,20 +29,21 @@ const getDate = (item: string, isEnd?: boolean): Date | string | null => {
 };
 
 interface queryProps {
-  orderBy: string;
+  sortBy: string;
   sort?: 'asc' | 'desc';
 }
 
 const checkOrder = (query: queryProps, list: string[]): boolean =>
   typeof query.sort === 'string' &&
   (query.sort === 'asc' || query.sort === 'desc') &&
-  (list.includes(query.orderBy) ||
-    query.orderBy === 'createdAt' ||
-    query.orderBy === 'updatedAt') &&
-  (!query.orderBy.endsWith('MoreThan') ||
-    !query.orderBy.endsWith('LessThan') ||
-    !query.orderBy.endsWith('Id') ||
-    !query.orderBy.endsWith('Boolean'));
+  (list.some((item) => item?.startsWith(query.sortBy)) ||
+    query.sortBy === 'createdAt' ||
+    query.sortBy === 'updatedAt') &&
+  (!query.sortBy.endsWith('MoreThan') ||
+    !query.sortBy.endsWith('LessThan') ||
+    !query.sortBy.endsWith('Id') ||
+    !query.sortBy.endsWith('Enum') ||
+    !query.sortBy.endsWith('Boolean'));
 
 export const getGenericFilter = <QueryType extends string>({
   query,
@@ -77,9 +78,9 @@ export const getGenericFilter = <QueryType extends string>({
       });
   }
 
-  if (typeof query.orderBy === 'string' && checkOrder(query as queryProps, list))
+  if (typeof query.sortBy === 'string' && checkOrder(query as queryProps, list))
     Object.assign(orderBy, {
-      [query.orderBy]: query.sort
+      [query.sortBy]: query.sort
     });
 
   for (const item of list)
@@ -133,8 +134,6 @@ export const getGenericFilter = <QueryType extends string>({
 
   return {
     orderBy,
-    where: {
-      AND: where
-    }
+    where: { AND: where }
   };
 };

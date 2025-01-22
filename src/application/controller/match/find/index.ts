@@ -6,7 +6,7 @@ import {
   messageErrorResponse,
   ok
 } from '@main/utils';
-import { matchFindParams } from '@data/search';
+import { matchFindParamsSimple } from '@data/search';
 import { matchListQueryFields } from '@data/validation';
 import type { Controller } from '@application/protocols';
 import type { Request, Response } from 'express';
@@ -14,7 +14,7 @@ import type { matchQueryFields } from '@data/validation';
 
 /**
  * @typedef {object} FindMatchPayload
- * @property {array<Match>} content
+ * @property {array<SimpleMatch>} content
  * @property {number} totalElements
  * @property {number} totalPages
  */
@@ -38,7 +38,7 @@ import type { matchQueryFields } from '@data/validation';
  * @param {integer} limit.query
  * @param {string} startDate.query (Ex: 2024-01-01).
  * @param {string} endDate.query (Ex: 2024-01-01).
- * @param {string} orderBy.query - enum:name,description,type,createdAt,updatedAt
+ * @param {string} sortBy.query - enum:name,description,type,createdAt,updatedAt
  * @param {string} sort.query - enum:asc,desc
  * @return {FindMatchResponse} 200 - Successful response - application/json
  * @return {BadRequest} 400 - Bad request response - application/json
@@ -56,7 +56,7 @@ export const findMatchController: Controller =
 
       const search = await DataSource.match.findMany({
         orderBy,
-        select: matchFindParams,
+        select: matchFindParamsSimple,
         skip,
         take,
         where

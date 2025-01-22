@@ -30,13 +30,13 @@ export const deleteMatchController: Controller =
       //     response
       //   });
 
-      const payload = await DataSource.match.update({
+      await DataSource.match.update({
         data: { finishedAt: new Date() },
         select: { id: true },
         where: { id: request.params.id }
       });
 
-      return ok({ payload, response });
+      return ok({ payload: messages.default.successfullyDeleted, response });
     } catch (error) {
       errorLogger(error);
       return badRequest({ message: messages.default.badRequest, response });

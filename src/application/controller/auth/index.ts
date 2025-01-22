@@ -46,7 +46,7 @@ interface Body {
  * @example request - payload example
  * {
  *   "email": "email@email",
- *   "password": "email"
+ *   "password": "password"
  * }
  * @param {LoginBody} request.body.required - application/json
  * @return {LoginResponse} 200 - Successful response - application/json
