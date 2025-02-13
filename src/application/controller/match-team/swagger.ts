@@ -1,12 +1,6 @@
 /**
- * @typedef {object} Player
+ * @typedef {object} MatchTeam
  * @property {string} id
- * @property {string} name
- * @property {string} nickname
- * @property {string} instagram
- * @property {boolean} isOnGuild
- * @property {boolean} isMember
- * @property {integer} totalKills
- * @property {string} createdAt
- * @property {string} updatedAt
+ * @property {integer} position
+ * @property {array<PlayerTeam>} playerTeam
  */
