@@ -1,6 +1,12 @@
 import { DataSource } from '@infra/database';
 import { ValidationError } from 'yup';
-import { errorLogger, messageErrorResponse, ok, validationErrorResponse } from '@main/utils';
+import {
+  badRequest,
+  errorLogger,
+  messageErrorResponse,
+  ok,
+  validationErrorResponse
+} from '@main/utils';
 import { insertMatchTeamSchema } from '@data/validation';
 import type { Controller } from '@application/protocols';
 import type { Request, Response } from 'express';
@@ -61,31 +67,67 @@ export const insertMatchTeamController: Controller =
 
       const { matchId, teams } = request.body as Body;
 
-      await DataSource.$transaction(async (tx) => {
-        await Promise.all(
-          teams.map(async (team) => {
-            const { position, players } = team;
+      let errorResponse: string | null = null;
 
-            await tx.matchTeam.create({
-              data: {
-                matchId,
-                playerTeam: {
-                  create: players.map((player) => ({
-                    kill: player.kill,
-                    player: {
-                      connectOrCreate: {
-                        create: { name: player.name },
-                        where: { name: player.name }
-                      }
-                    }
-                  }))
-                },
-                position
+      for await (const team of teams) {
+        const { position, players } = team;
+
+        const userOnMatch = await DataSource.matchTeam.findMany({
+          select: {
+            playerTeam: {
+              select: {
+                player: {
+                  select: {
+                    id: true,
+                    name: true
+                  }
+                }
               }
-            });
-          })
-        );
-      });
+            }
+          },
+          where: {
+            AND: {
+              matchId,
+              playerTeam: {
+                some: {
+                  player: {
+                    OR: players.map((item) => ({ name: item.name }))
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        if (userOnMatch?.length > 0) {
+          errorResponse = `Os usuários : ${userOnMatch
+            .map((item) => item.playerTeam.map((item2) => ` "${item2.player.name}"`).join(','))
+            .join(',')} já estão nessa partida`;
+
+          break;
+        }
+
+        await DataSource.matchTeam.create({
+          data: {
+            matchId,
+            playerTeam: {
+              create: players.map((player) => ({
+                kill: player.kill,
+                player: {
+                  connectOrCreate: {
+                    create: { name: player.name },
+                    where: { name: player.name }
+                  }
+                }
+              }))
+            },
+            position
+          }
+        });
+      }
+
+      if (typeof errorResponse === 'string')
+        return badRequest({ message: { english: 'error', portuguese: errorResponse }, response });
 
       return ok({ response });
     } catch (error) {
