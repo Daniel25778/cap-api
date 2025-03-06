@@ -1,0 +1,37 @@
+import { DataSource } from '@infra/database';
+import { badRequest, errorLogger, ok } from '@main/utils';
+import { messages } from '@domain/helpers';
+import type { Controller } from '@application/protocols';
+import type { Request, Response } from 'express';
+
+/**
+ * @typedef {object} DeletePlayerTeamResponse
+ * @property {Messages} message
+ * @property {string} status
+ */
+
+/**
+ * DELETE /player-team/{id}
+ * @summary Delete Player Team
+ * @tags Player Team
+ * @security BearerAuth
+ * @param {string} id.path.required
+ * @return {DeletePlayerTeamResponse} 200 - Successful response - application/json
+ * @return {BadRequest} 400 - Bad request response - application/json
+ * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
+ * @return {ForbiddenRequest} 403 - Forbidden response - application/json
+ */
+export const deletePlayerTeamController: Controller =
+  () => async (request: Request, response: Response) => {
+    try {
+      await DataSource.playerTeam.delete({
+        select: { id: true },
+        where: { id: request.params.id }
+      });
+
+      return ok({ payload: messages.default.successfullyDeleted, response });
+    } catch (error) {
+      errorLogger(error);
+      return badRequest({ message: messages.default.badRequest, response });
+    }
+  };
